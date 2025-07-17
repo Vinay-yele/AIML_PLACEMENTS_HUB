@@ -8,8 +8,18 @@ const app = express();
 const PORT = process.env.PORT || 4001;
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/placement_app'; // Default local URI
 
-// Middleware
-app.use(cors()); // Enable CORS for all routes
+const allowedOrigins = ['http://localhost:3000', 'https://aiml-placements-hub.vercel.app/']; // <--- UPDATE THIS LINE
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    }
+}));
+
 app.use(express.json()); // Parse JSON request bodies
 
 // Connect to MongoDB
