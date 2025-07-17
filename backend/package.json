@@ -2,9 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "node server.js",  // Changed from nodemon to node for production
+    "dev": "nodemon server.js", // Added a 'dev' script for local development
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,10 +15,12 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
-    "express": "^5.1.0",
+    "express": "^4.19.2",   // Recommended: Downgraded to latest stable v4.x
     "mongoose": "^8.16.3",
     "multer": "^2.0.1",
-    "nodemailer": "^7.0.5",
+    "nodemailer": "^7.0.5"
+  },
+  "devDependencies": {        // nodemon moved here
     "nodemon": "^3.1.10"
   }
 }
