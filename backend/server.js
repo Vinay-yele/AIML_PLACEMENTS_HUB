@@ -43,13 +43,13 @@ const announcementRoutes = require('./routes/announcementRoutes');
 const issueRoutes = require('./routes/issueRoutes');
 const resourceRoutes = require('./routes/resourceRoutes');
 const subscriberRoutes = require('./routes/subscriberRoutes');
-const feedbackRoutes = require('./routes/feedbackRoutes');
+
 
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/issues', issueRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/subscribers', subscriberRoutes);
-app.use('/api/feedback', feedbackRoutes);
+
 
 // Start the server
 app.listen(PORT, () => {
