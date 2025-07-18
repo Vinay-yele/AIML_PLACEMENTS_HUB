@@ -1,27 +1,45 @@
 // frontend/src/pages/HomePage.js
 import React from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 
 const HomePage = () => {
     return (
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-250px)] text-center p-4">
-            <h2 className="text-5xl md:text-6xl font-extrabold text-blue-800 mb-6 drop-shadow-lg animate-fade-in-down">
-                Welcome to the Placement Coordination Portal!
-            </h2>
-            <p className="text-lg md:text-xl text-gray-700 max-w-3xl leading-relaxed mb-10 animate-fade-in-up">
-                Your central hub for all placement-related activities. Stay updated with announcements, access vital resources, report issues, and keep track of important events.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl">
-                <div className="bg-white rounded-xl shadow-xl p-7 transform hover:scale-105 transition-transform duration-300 ease-in-out border border-blue-200">
-                    <h3 className="text-2xl font-bold text-blue-700 mb-3">Stay Updated</h3>
-                    <p className="text-gray-700 leading-relaxed">Check the Announcements section for the latest news, forwarded emails, and important notices.</p>
-                </div>
-                <div className="bg-white rounded-xl shadow-xl p-7 transform hover:scale-105 transition-transform duration-300 ease-in-out border border-green-200">
-                    <h3 className="text-2xl font-bold text-green-700 mb-3">Access Resources</h3>
-                    <p className="text-gray-700 leading-relaxed">Find important documents, company information, and preparation materials to aid your journey.</p>
-                </div>
-                <div className="bg-white rounded-xl shadow-xl p-7 transform hover:scale-105 transition-transform duration-300 ease-in-out border border-purple-200">
-                    <h3 className="text-2xl font-bold text-purple-700 mb-3">Report Issues</h3>
-                    <p className="text-gray-700 leading-relaxed">Submit your queries, report problems, or ask questions directly to the placement cell.</p>
+        <div className="relative min-h-[calc(100vh-250px)] flex items-center justify-center text-center p-4 overflow-hidden bg-gradient-to-br from-gray-900 to-black text-white">
+            {/* Background elements for visual flair */}
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-green-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+            <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+
+            {/* Content Container */}
+            <div className="relative z-10 max-w-4xl mx-auto">
+                {/* Tagline/Pre-headline */}
+                <p className="text-xl md:text-2xl font-semibold text-green-400 mb-4 animate-fade-in-down">
+                    Your Gateway to Success
+                </p>
+                {/* Main Headline */}
+                <h2 className="text-5xl md:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-down-slow drop-shadow-xl">
+                    Elevate Your <span className="text-blue-400">Placement Journey</span>
+                </h2>
+                {/* Description */}
+                <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed mb-10 animate-fade-in-up-slow">
+                    Access the latest announcements, essential resources, and dedicated support to navigate your career path with confidence.
+                </p>
+
+                {/* Call-to-Action Buttons */}
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-6 animate-fade-in-up-slower">
+                    <Link
+                        to="/AnnouncementPage"
+                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                    >
+                        View Announcements
+                        <span className="ml-2 inline-block transition-transform group-hover:translate-x-1">→</span>
+                    </Link>
+                    <Link
+                        to="/ResourcesPage"
+                        className="bg-transparent border-2 border-blue-500 text-blue-300 hover:bg-blue-500 hover:text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                    >
+                        Explore Resources
+                    </Link>
                 </div>
             </div>
         </div>

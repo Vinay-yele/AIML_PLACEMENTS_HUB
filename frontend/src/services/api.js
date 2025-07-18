@@ -4,7 +4,7 @@ import axios from 'axios';
 // Create an Axios instance with a base URL pointing to your backend API
 // frontend/src/services/api.js
 const API = axios.create({
-    baseURL: 'https://aiml-placements-hub.onrender.com', // <--- UPDATE THIS LINE
+    baseURL: 'https://aiml-placements-hub.onrender.com/api', // <--- UPDATE THIS LINE
 });
 
 // --- API Functions for Announcements ---
