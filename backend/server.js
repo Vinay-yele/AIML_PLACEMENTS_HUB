@@ -1,16 +1,23 @@
 // backend/server.js
-require('dotenv').config(); // Load environment variables from .env
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors'); // Import cors
+const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 4001;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/placement_app'; // Default local URI
+const PORT = process.env.PORT || 4001; // Use host's PORT or default to 4001
+const MONGO_URI = process.env.MONGO_URI; // MONGO_URI should be set in Render env vars
 
-const allowedOrigins = ['http://localhost:3000', 'https://aiml-placements-hub.vercel.app/']; // <--- UPDATE THIS LINE
+// Middleware
+// Configure CORS for production to allow your Vercel frontend
+const allowedOrigins = [
+    'http://localhost:3000', // For local frontend development
+    'https://aiml-placements-hub.vercel.app' // <--- YOUR LIVE VERCEL FRONTEND URL
+];
+
 app.use(cors({
     origin: function (origin, callback) {
+        // allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         if (allowedOrigins.indexOf(origin) === -1) {
             const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
@@ -19,8 +26,7 @@ app.use(cors({
         return callback(null, true);
     }
 }));
-
-app.use(express.json()); // Parse JSON request bodies
+app.use(express.json());
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI)
@@ -32,20 +38,18 @@ app.get('/', (req, res) => {
     res.send('Placement Coordination Backend API');
 });
 
+// Import and use routes
 const announcementRoutes = require('./routes/announcementRoutes');
 const issueRoutes = require('./routes/issueRoutes');
 const resourceRoutes = require('./routes/resourceRoutes');
 const subscriberRoutes = require('./routes/subscriberRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
 
-app.get("/health", (req, res) => {
-    res.status(200).json({ status: "OK" });
-});
+app.use('/api/announcements', announcementRoutes);
 app.use('/api/issues', issueRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/subscribers', subscriberRoutes);
-
-app.use('/api/announcements', announcementRoutes);
-
+app.use('/api/feedback', feedbackRoutes);
 
 // Start the server
 app.listen(PORT, () => {
