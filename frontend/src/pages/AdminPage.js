@@ -6,7 +6,7 @@ const AdminPage = () => {
     // State for the simple admin password check
     const [isAdmin, setIsAdmin] = useState(false);
     const [adminPassword, setAdminPassword] = useState('');
-    const ADMIN_SECRET_PASSWORD = 'adminpassword123'; // !!! IMPORTANT: Hardcoded for local dev. NOT SECURE for production.
+    const ADMIN_SECRET_PASSWORD = 'Vinayele@2013'; // !!! IMPORTANT: Hardcoded for local dev. NOT SECURE for production.
 
     // State for the announcement form data
     const [announcementFormData, setAnnouncementFormData] = useState({
