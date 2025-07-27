@@ -12,6 +12,22 @@ exports.getAllAnnouncements = async (req, res) => {
     }
 };
 
+exports.deleteAnnouncement = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const deleted = await Announcement.findByIdAndDelete(id);
+        if (!deleted) {
+            return res.status(404).json({ message: 'Announcement not found' });
+        }
+        res.json({ message: 'Announcement deleted successfully' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+    console.log("🗑️ Attempting to delete announcement with ID:", req.params.id);
+
+};
+
+
 // POST create a new announcement
 exports.createAnnouncement = async (req, res) => {
     console.log("📨 Incoming request to create announcement:", req.body);

@@ -7,7 +7,7 @@ import HomePage from './pages/HomePage';
 import AnnouncementPage from './pages/AnnouncementPage';
 import IssuesPage from './pages/IssuesPage';
 import ResourcesPage from './pages/ResourcesPage';
-import ContactPage from './pages/ContactPage';
+import AlumniExperiencePage from './pages/AlumniExperiencePage';
 import AdminPage from './pages/AdminPage';
 
 // Helper component to apply active class to navigation links
@@ -46,7 +46,7 @@ function App() {
                 <NavLink to="/announcements">Announcements</NavLink>
                 <NavLink to="/issues">Issues</NavLink>
                 <NavLink to="/resources">Resources</NavLink>
-                <NavLink to="/contact">Contact</NavLink>
+                <NavLink to="/alumni">Alumni Experience Section</NavLink>
               </ul>
             </nav>
           </div>
@@ -59,7 +59,7 @@ function App() {
             <Route path="/announcements" element={<AnnouncementPage />} />
             <Route path="/issues" element={<IssuesPage />} />
             <Route path="/resources" element={<ResourcesPage />} />
-            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/alumni" element={<AlumniExperiencePage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="*" element={
               <div className="flex flex-col items-center justify-center min-h-[calc(100vh-250px)] text-center text-white">
