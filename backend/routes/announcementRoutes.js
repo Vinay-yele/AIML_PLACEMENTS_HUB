@@ -9,4 +9,5 @@ router.get('/', announcementController.getAllAnnouncements);
 
 router.post('/', announcementController.createAnnouncement);
 
+router.delete('/:id', announcementController.deleteAnnouncement);
 module.exports = router;
