@@ -2,7 +2,9 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'https://aiml-placements-hub.onrender.com/api',
+    baseURL: process.env.NODE_ENV === 'production'
+        ? 'https://aimlplacementshub.me/api'
+        : 'http://localhost:4001/api',
 });
 
 // --- Announcements ---
@@ -33,6 +35,11 @@ export const submitFeedback = (feedbackData) => API.post('/feedback', feedbackDa
 export const getAllFeedback = () => API.get('/feedback');
 
 // --- Alumni Experiences ---
-export const submitExperience = (experienceData) => API.post('/experiences', experienceData);
+export const getApprovedAlumniExperiences = () => API.get('/alumni-experiences'); // Public view
+export const submitAlumniExperience = (experienceData) => API.post('/alumni-experiences', experienceData); // Public submission
+export const getAllAlumniExperiencesAdmin = () => API.get('/alumni-experiences/admin'); // Admin view
+export const updateAlumniExperienceStatus = (id, statusData) => API.patch(`/alumni-experiences/${id}`, statusData); // Admin update status
+export const deleteAlumniExperience = (id) => API.delete(`/alumni-experiences/${id}`); // Admin delete
+
 
 export default API;

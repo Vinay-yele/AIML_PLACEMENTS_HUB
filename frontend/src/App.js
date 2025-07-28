@@ -7,8 +7,10 @@ import HomePage from './pages/HomePage';
 import AnnouncementPage from './pages/AnnouncementPage';
 import IssuesPage from './pages/IssuesPage';
 import ResourcesPage from './pages/ResourcesPage';
-import AlumniExperiencePage from './pages/AlumniExperiencePage';
 import AdminPage from './pages/AdminPage';
+import AlumniExperiencePage from './pages/AlumniExperiencePage'; // NEW: Import AlumniExperiencePage
+import AlumniSubmitPage from './pages/AlumniSubmitPage'; // NEW: Import AlumniSubmitPage
+
 
 // Helper component to apply active class to navigation links
 const NavLink = ({ to, children }) => {
@@ -46,7 +48,7 @@ function App() {
                 <NavLink to="/announcements">Announcements</NavLink>
                 <NavLink to="/issues">Issues</NavLink>
                 <NavLink to="/resources">Resources</NavLink>
-                <NavLink to="/alumni">Alumni Experience Section</NavLink>
+                <NavLink to="/alumni-experiences">Alumni Experiences</NavLink> {/* NEW: Alumni Experiences Link */}
               </ul>
             </nav>
           </div>
@@ -59,8 +61,10 @@ function App() {
             <Route path="/announcements" element={<AnnouncementPage />} />
             <Route path="/issues" element={<IssuesPage />} />
             <Route path="/resources" element={<ResourcesPage />} />
-            <Route path="/alumni" element={<AlumniExperiencePage />} />
+            <Route path="/alumni-experiences" element={<AlumniExperiencePage />} /> {/* NEW: Public Alumni Page Route */}
+            <Route path="/alumni-submit" element={<AlumniSubmitPage />} /> {/* NEW: Alumni Submission Page Route (private access) */}
             <Route path="/admin" element={<AdminPage />} />
+
             <Route path="*" element={
               <div className="flex flex-col items-center justify-center min-h-[calc(100vh-250px)] text-center text-white">
                 <h2 className="text-6xl font-extrabold text-red-500 mb-4 animate-bounce">404</h2>

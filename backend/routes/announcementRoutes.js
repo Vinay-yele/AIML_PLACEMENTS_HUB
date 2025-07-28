@@ -1,13 +1,12 @@
+// backend/routes/announcementRoutes.js
 
+import { Router } from 'express';
+import { getAllAnnouncements, createAnnouncement, deleteAnnouncement } from '../controllers/announcementController.js';
 
-const express = require('express');
-const router = express.Router();
-const announcementController = require('../controllers/announcementController');
+const router = Router();
 
+router.get('/', getAllAnnouncements);
+router.post('/', createAnnouncement);
+router.delete('/:id', deleteAnnouncement);
 
-router.get('/', announcementController.getAllAnnouncements);
-
-router.post('/', announcementController.createAnnouncement);
-
-router.delete('/:id', announcementController.deleteAnnouncement);
-module.exports = router;
+export default router; // ✅ ES Module default export

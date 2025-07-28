@@ -1,17 +1,23 @@
 // backend/routes/issueRoutes.js
-const express = require('express');
-const router = express.Router();
-const issueController = require('../controllers/issueController');
+import { Router } from 'express';
+import {
+  getAllIssues,
+  createIssue,
+  getIssueById,
+  updateIssue,
+  deleteIssue
+} from '../controllers/issueController.js';
 
-// Route to get all issues and create a new issue
+const router = Router();
+
 router.route('/')
-    .get(issueController.getAllIssues)
-    .post(issueController.createIssue);
+  .get(getAllIssues)
+  .post(createIssue);
 
-// Route to get, update, or delete a single issue by ID
 router.route('/:id')
-    .get(issueController.getIssueById)
-    .patch(issueController.updateIssue) // PATCH for partial updates
-    .delete(issueController.deleteIssue);
+  .get(getIssueById)
+  .patch(updateIssue)
+  .delete(deleteIssue);
 
-module.exports = router;
+// ✅ This line is absolutely required for ES Modules default import
+export default router;

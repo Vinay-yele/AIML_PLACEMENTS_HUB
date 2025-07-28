@@ -1,7 +1,7 @@
-const Announcement = require('../models/Announcement');
+import Announcement from '../models/Announcement.js';
 
 // GET all announcements
-exports.getAllAnnouncements = async (req, res) => {
+export async function getAllAnnouncements(req, res) {
     try {
         console.log("📢 Fetching all announcements");
         const announcements = await Announcement.find().sort({ date: -1 });
@@ -10,9 +10,11 @@ exports.getAllAnnouncements = async (req, res) => {
         console.error("❌ Error fetching announcements:", err);
         res.status(500).json({ message: "Server error while fetching announcements." });
     }
-};
+}
 
-exports.deleteAnnouncement = async (req, res) => {
+// DELETE an announcement
+export async function deleteAnnouncement(req, res) {
+    console.log("🗑️ Attempting to delete announcement with ID:", req.params.id);
     try {
         const id = req.params.id;
         const deleted = await Announcement.findByIdAndDelete(id);
@@ -23,18 +25,13 @@ exports.deleteAnnouncement = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-    console.log("🗑️ Attempting to delete announcement with ID:", req.params.id);
-
-};
-
+}
 
 // POST create a new announcement
-exports.createAnnouncement = async (req, res) => {
+export async function createAnnouncement(req, res) {
     console.log("📨 Incoming request to create announcement:", req.body);
+    const { title, content, author, category } = req.body;
 
-    const { title, content, author, category } = req.body || {};
-
-    // 💡 Defensive: Check if required fields are present
     if (!title || !content || !author || !category) {
         return res.status(400).json({
             message: "Missing required fields: title, content, author, and category are mandatory."
@@ -47,16 +44,14 @@ exports.createAnnouncement = async (req, res) => {
             content,
             author,
             category,
-            date: new Date()  // Optional: if you want to explicitly set `date`
+            date: new Date()
         });
 
         const savedAnnouncement = await announcement.save();
         console.log("✅ Announcement saved:", savedAnnouncement);
-
         res.status(201).json(savedAnnouncement);
-    }   catch (err) {
-        console.error("❌ Mongoose error:", err);  // Show exact cause
+    } catch (err) {
+        console.error("❌ Mongoose error:", err);
         res.status(500).json({ message: err.message });
     }
-
-};
+}

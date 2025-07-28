@@ -1,116 +1,67 @@
 // frontend/src/pages/AlumniExperiencePage.js
-import React, { useState } from 'react';
-import { submitExperience } from '../services/api';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getApprovedAlumniExperiences } from '../services/api'; // Import API function
 
 const AlumniExperiencePage = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        company: '',
-        ctc: '',
-        experience: ''
-    });
-    const [responseMessage, setResponseMessage] = useState('');
-    const [messageType, setMessageType] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [experiences, setExperiences] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevData => ({ ...prevData, [name]: value }));
-    };
+    useEffect(() => {
+        const fetchExperiences = async () => {
+            try {
+                const response = await getApprovedAlumniExperiences();
+                setExperiences(response.data);
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching alumni experiences:', err);
+                setError('Failed to load alumni experiences. Please try again later.');
+                setLoading(false);
+            }
+        };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setResponseMessage('');
-        setMessageType('');
+        fetchExperiences();
+    }, []);
 
-        try {
-            await submitExperience(formData);
-            setResponseMessage('Thank you! Your experience has been submitted successfully.');
-            setMessageType('success');
-            setFormData({ name: '', company: '', ctc: '', experience: '' });
-        } catch (err) {
-            console.error('Error submitting experience:', err);
-            setResponseMessage(err.response?.data?.message || 'Submission failed. Please try again.');
-            setMessageType('error');
-        } finally {
-            setLoading(false);
-        }
-    };
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <p className="text-gray-600 text-lg font-medium">Loading alumni experiences...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <p className="text-red-600 text-lg font-medium">{error}</p>
+            </div>
+        );
+    }
 
     return (
-        <div className="container mx-auto p-6 text-white">
-            <h2 className="text-4xl font-extrabold text-center text-blue-400 drop-shadow-md mb-10">Share Your Interview Experience</h2>
-
-            {responseMessage && (
-                <div className={`p-4 rounded-lg mb-6 text-center text-lg font-medium ${messageType === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                    {responseMessage}
+        <div className="container mx-auto p-4">
+            <h2 className="text-4xl font-extrabold text-white mb-8 text-center drop-shadow-sm">Alumni Experiences</h2>
+            {experiences.length === 0 ? (
+                <div className="bg-gray-800 rounded-lg shadow-md p-6 text-center text-gray-400 text-lg border border-gray-700">
+                    <p>No alumni experiences available yet. Check back soon!</p>
+                    <p className="mt-2 text-sm">Are you an alumni? <Link to="/alumni-submit" className="text-blue-400 hover:underline">Share your experience!</Link></p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {experiences.map((exp) => (
+                        <div key={exp._id} className="bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-700 transform transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl">
+                            <h3 className="text-xl font-bold text-green-400 mb-2">{exp.alumniName} ({exp.batch})</h3>
+                            <p className="text-lg font-semibold text-blue-400 mb-3">{exp.role} at {exp.company}</p>
+                            <p className="text-gray-300 leading-relaxed text-base whitespace-pre-wrap border-t border-gray-700 pt-4">
+                                {exp.experience}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-4">Approved: {new Date(exp.approvedAt).toLocaleDateString()}</p>
+                        </div>
+                    ))}
                 </div>
             )}
-
-            <form onSubmit={handleSubmit} className="bg-[#0f172a] border border-blue-700 rounded-xl shadow-xl p-8 max-w-3xl mx-auto">
-                <div className="mb-6">
-                    <label htmlFor="name" className="block text-white font-semibold mb-2">Your Name:</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-[#1e293b] text-white"
-                        placeholder="e.g., Rahul Sharma"
-                        required
-                    />
-                </div>
-                <div className="mb-6">
-                    <label htmlFor="company" className="block text-white font-semibold mb-2">Company Placed In:</label>
-                    <input
-                        type="text"
-                        id="company"
-                        name="company"
-                        value={formData.company}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-[#1e293b] text-white"
-                        placeholder="e.g., Google"
-                        required
-                    />
-                </div>
-                <div className="mb-6">
-                    <label htmlFor="ctc" className="block text-white font-semibold mb-2">CTC (in LPA):</label>
-                    <input
-                        type="number"
-                        id="ctc"
-                        name="ctc"
-                        value={formData.ctc}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-[#1e293b] text-white"
-                        placeholder="e.g., 12"
-                        required
-                    />
-                </div>
-                <div className="mb-8">
-                    <label htmlFor="experience" className="block text-white font-semibold mb-2">Interview Experience:</label>
-                    <textarea
-                        id="experience"
-                        name="experience"
-                        value={formData.experience}
-                        onChange={handleChange}
-                        rows="7"
-                        className="w-full px-4 py-2 border border-gray-600 rounded-lg bg-[#1e293b] text-white resize-y"
-                        placeholder="Briefly describe the rounds, questions, and your preparation journey."
-                        required
-                    ></textarea>
-                </div>
-                <div className="flex justify-center">
-                    <button
-                        type="submit"
-                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-10 rounded-full shadow-lg transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={loading}
-                    >
-                        {loading ? 'Submitting...' : 'Submit Experience'}
-                    </button>
-                </div>
-            </form>
         </div>
     );
 };

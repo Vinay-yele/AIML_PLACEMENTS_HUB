@@ -1,23 +1,23 @@
 // backend/controllers/issueController.js
-const Issue = require('../models/Issue');
-const { sendEmail } = require('../utils/emailService'); // Import the email utility
+import Issue from '../models/Issue.js';
+import { sendEmail } from '../utils/emailService.js';
 
-// @desc    Get all issues
+// @desc    Get all issues       
 // @route   GET /api/issues
 // @access  Public (or Private for Admin dashboard later)
-exports.getAllIssues = async (req, res) => {
+export async function getAllIssues(req, res) {
     try {
         const issues = await Issue.find().sort({ dateSubmitted: -1 });
         res.json(issues);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
 
 // @desc    Get a single issue by ID
 // @route   GET /api/issues/:id
 // @access  Public (or Private for Admin dashboard later)
-exports.getIssueById = async (req, res) => {
+export async function getIssueById(req, res) {
     try {
         const issue = await Issue.findById(req.params.id);
         if (!issue) {
@@ -27,12 +27,12 @@ exports.getIssueById = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
 
 // @desc    Create a new issue
 // @route   POST /api/issues
 // @access  Public
-exports.createIssue = async (req, res) => {
+export async function createIssue(req, res) {
     const issue = new Issue({
         studentName: req.body.studentName,
         studentEmail: req.body.studentEmail,
@@ -73,12 +73,12 @@ exports.createIssue = async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-};
+}
 
 // @desc    Update an issue (e.g., change status, add resolution notes)
 // @route   PATCH /api/issues/:id
 // @access  Private (Admin only) - for future implementation
-exports.updateIssue = async (req, res) => {
+export async function updateIssue(req, res) {
     try {
         const updatedIssue = await Issue.findByIdAndUpdate(
             req.params.id,
@@ -92,12 +92,12 @@ exports.updateIssue = async (req, res) => {
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
-};
+}
 
 // @desc    Delete an issue
 // @route   DELETE /api/issues/:id
 // @access  Private (Admin only) - for future implementation
-exports.deleteIssue = async (req, res) => {
+export async function deleteIssue(req, res) {
     try {
         const deletedIssue = await Issue.findByIdAndDelete(req.params.id);
         if (!deletedIssue) {
@@ -107,4 +107,4 @@ exports.deleteIssue = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}

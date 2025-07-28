@@ -1,5 +1,5 @@
 // backend/models/Issue.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';    
 
 // Define the schema for an Issue
 const issueSchema = new mongoose.Schema({
@@ -47,4 +47,4 @@ const issueSchema = new mongoose.Schema({
 });
 
 // Export the Issue model
-module.exports = mongoose.model('Issue', issueSchema);
+export default mongoose.model('Issue', issueSchema);

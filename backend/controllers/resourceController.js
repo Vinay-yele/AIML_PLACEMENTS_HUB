@@ -1,20 +1,26 @@
 // backend/controllers/resourceController.js
-const Resource = require('../models/Resource');
-const path = require('path'); // Node.js built-in module for path manipulation
-const fs = require('fs');     // Node.js built-in module for file system operations
+import Resource from '../models/Resource.js';
+import { existsSync, mkdirSync, unlink } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
-// Define the directory where uploaded files will be stored
-const UPLOAD_DIR = path.join(__dirname, '../uploads');
+// ES Module-compatible __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-// Ensure the uploads directory exists
-if (!fs.existsSync(UPLOAD_DIR)) {
-    fs.mkdirSync(UPLOAD_DIR, { recursive: true }); // Create directory if it doesn't exist
+// Define the upload directory
+const UPLOAD_DIR = join(__dirname, '../uploads');
+
+// Ensure the upload folder exists
+if (!existsSync(UPLOAD_DIR)) {
+    mkdirSync(UPLOAD_DIR, { recursive: true });
 }
+
 
 // @desc    Get all resources
 // @route   GET /api/resources
 // @access  Public
-exports.getAllResources = async (req, res) => {
+export async function getAllResources(req, res) {
     try {
         // Find all resources and sort by upload date (newest first)
         const resources = await Resource.find().sort({ uploadDate: -1 });
@@ -22,12 +28,12 @@ exports.getAllResources = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
 
 // @desc    Upload a new resource
 // @route   POST /api/resources/upload
 // @access  Private (Admin only) - for future implementation
-exports.uploadResource = async (req, res) => {
+export async function uploadResource(req, res) {
     // Check if a file was uploaded by multer middleware
     if (!req.file) {
         return res.status(400).json({ message: 'No file uploaded' });
@@ -48,17 +54,17 @@ exports.uploadResource = async (req, res) => {
         res.status(201).json(savedResource);
     } catch (err) {
         // If saving to DB fails, delete the uploaded file to prevent orphans
-        fs.unlink(req.file.path, (unlinkErr) => {
+        unlink(req.file.path, (unlinkErr) => {
             if (unlinkErr) console.error('Error deleting uploaded file:', unlinkErr);
         });
         res.status(400).json({ message: err.message });
     }
-};
+}
 
 // @desc    Download a resource by filename
 // @route   GET /api/resources/download/:filename
 // @access  Public
-exports.downloadResource = async (req, res) => {
+export async function downloadResource(req, res) {
     try {
         // Find the resource metadata by its unique filename
         const resource = await Resource.findOne({ filename: req.params.filename });
@@ -67,10 +73,10 @@ exports.downloadResource = async (req, res) => {
         }
 
         // Construct the full path to the file
-        const filePath = path.join(UPLOAD_DIR, resource.filename);
+        const filePath = join(UPLOAD_DIR, resource.filename);
 
         // Check if the file actually exists on the server
-        if (fs.existsSync(filePath)) {
+        if (existsSync(filePath)) {
             // Send the file for download
             res.download(filePath, resource.originalName, (err) => {
                 if (err) {
@@ -86,12 +92,12 @@ exports.downloadResource = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
 
 // @desc    Delete a resource (file and metadata)
 // @route   DELETE /api/resources/:id
 // @access  Private (Admin only) - for future implementation
-exports.deleteResource = async (req, res) => {
+export async function deleteResource(req, res) {
     try {
         // Find the resource by ID
         const resource = await Resource.findById(req.params.id);
@@ -100,7 +106,7 @@ exports.deleteResource = async (req, res) => {
         }
 
         // Delete the file from the server's file system
-        fs.unlink(resource.filePath, async (err) => {
+        unlink(resource.filePath, async (err) => {
             if (err) {
                 console.error('Error deleting file from server:', err);
                 // Even if file deletion fails, try to delete metadata from DB
@@ -115,4 +121,4 @@ exports.deleteResource = async (req, res) => {
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
-};
+}
