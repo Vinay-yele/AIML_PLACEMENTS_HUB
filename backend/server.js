@@ -2,8 +2,12 @@
 import express, { json } from 'express';
 import { connect } from 'mongoose';
 import cors from 'cors';
-import dotenv from 'dotenv';             // ✅ ESM-compatible dotenv
+
+
+import * as dotenv from 'dotenv';
 dotenv.config();
+
+
 
 const app = express();
 const PORT = process.env.PORT || 4001;
@@ -43,12 +47,14 @@ import announcementRoutes from './routes/announcementRoutes.js';
 import issueRoutes from './routes/issueRoutes.js';
 import resourceRoutes from './routes/resourceRoutes.js';
 import alumniExperienceRoutes from './routes/alumniExperienceRoutes.js';
+import projectRoutes from './routes/projectRoutes.js'; // NEW: Import project routes
 
 // Mount routes
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/issues', issueRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/alumni-experiences', alumniExperienceRoutes); // NEW: Use alumni experience routes
+app.use('/api/projects', projectRoutes);
 
 
 // Start server

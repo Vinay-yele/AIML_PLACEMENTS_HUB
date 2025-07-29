@@ -26,9 +26,6 @@ export const downloadResource = (filename) => API.get(`/resources/download/${fil
     responseType: 'blob'
 });
 
-// --- Subscribers ---
-export const subscribeToUpdates = (emailData) => API.post('/subscribers', emailData);
-export const getAllSubscribers = () => API.get('/subscribers');
 
 // --- Feedback ---
 export const submitFeedback = (feedbackData) => API.post('/feedback', feedbackData);
@@ -41,5 +38,13 @@ export const getAllAlumniExperiencesAdmin = () => API.get('/alumni-experiences/a
 export const updateAlumniExperienceStatus = (id, statusData) => API.patch(`/alumni-experiences/${id}`, statusData); // Admin update status
 export const deleteAlumniExperience = (id) => API.delete(`/alumni-experiences/${id}`); // Admin delete
 
+// --- NEW: API Functions for Projects ---
+export const getApprovedProjects = () => API.get('/projects'); // Public view
+export const submitProject = (formData) => API.post('/projects', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' } // Important for file uploads
+});
+export const getAllProjectsAdmin = () => API.get('/projects/admin'); // Admin view
+export const updateProjectStatus = (id, statusData) => API.patch(`/projects/${id}`, statusData); // Admin update status
+export const deleteProject = (id) => API.delete(`/projects/${id}`); // Admin delete
 
 export default API;

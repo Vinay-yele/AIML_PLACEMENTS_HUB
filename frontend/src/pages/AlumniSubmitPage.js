@@ -51,7 +51,7 @@ const AlumniSubmitPage = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 min-h-screen">
             <h2 className="text-4xl font-extrabold text-white mb-8 text-center drop-shadow-sm">Share Your Alumni Experience</h2>
 
             {message && (

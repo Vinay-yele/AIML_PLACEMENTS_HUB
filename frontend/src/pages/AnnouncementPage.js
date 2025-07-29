@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { getAnnouncements } from '../services/api';
 import AnnouncementCard from '../components/AnnouncementCard';
 
-const AnnouncementPage = () => { // Renamed from AnnouncementsPage to AnnouncementPage to match App.js import
+const AnnouncementPage = () => {
     const [announcements, setAnnouncements] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -26,25 +26,25 @@ const AnnouncementPage = () => { // Renamed from AnnouncementsPage to Announceme
 
     if (loading) {
         return (
-            <div className="flex justify-center items-center h-64">
-                <p className="text-gray-600 text-lg font-medium">Loading announcements...</p>
+            <div className="flex justify-center items-center min-h-[calc(100vh-200px)]"> {/* Adjusted min-height */}
+                <p className="text-lavender-gray text-lg font-medium">Loading announcements...</p>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="flex justify-center items-center h-64">
-                <p className="text-red-600 text-lg font-medium">{error}</p>
+            <div className="flex justify-center items-center min-h-[calc(100vh-200px)]"> {/* Adjusted min-height */}
+                <p className="text-red-500 text-lg font-medium">{error}</p>
             </div>
         );
     }
 
     return (
-        <div className="container mx-auto p-4">
-            <h2 className="text-4xl font-extrabold text-gray-800 mb-8 text-center drop-shadow-sm">Latest Announcements</h2>
+        <div className="container mx-auto p-4 min-h-screen"> {/* Full screen height */}
+            <h2 className="text-4xl font-extrabold text-lavender-soft mb-8 text-center drop-shadow-sm">Latest Announcements</h2>
             {announcements.length === 0 ? (
-                <div className="bg-white rounded-lg shadow-md p-6 text-center text-gray-600 text-lg border border-gray-200">
+                <div className="bg-deep-purple-blue rounded-xl shadow-lg p-6 text-center text-lavender-gray text-lg border border-lavender-gray">
                     <p>No announcements available yet. Please check back soon!</p>
                 </div>
             ) : (
