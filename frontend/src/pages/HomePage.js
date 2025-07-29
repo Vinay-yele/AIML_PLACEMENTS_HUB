@@ -8,9 +8,7 @@ const HomePage = () => {
 
       {/* Hero Section */}
       <section className="w-full flex flex-col items-center justify-center text-center px-6 py-24 box-border">
-        <span className="text-sm px-4 py-1 mb-4 rounded-full bg-[#2c2f45] text-blue-300 border border-blue-500">
-          Trusted by Students and Alumni
-        </span>
+        
         <h2 className="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
           Revolutionize Your <br />
           <span className="bg-gradient-to-r from-[#CCCCFF] via-[#A3A3CC] to-[#5C5C99] text-transparent bg-clip-text">

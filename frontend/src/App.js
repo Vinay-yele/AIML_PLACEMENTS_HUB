@@ -40,65 +40,81 @@ const App = () => {
     <Router>
       <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#1e1f33] to-[#0d0d1d] text-white font-inter w-full">
         {/* Navbar */}
-        <nav className="w-full flex justify-between items-center px-6 py-6 border-b border-[#2c2f45] backdrop-blur-md md:sticky md:top-0 md:z-50 bg-[#0d0d1d] md:bg-transparent">
-          <h1 className="text-2xl md:text-3xl font-bold text-[#CCCCFF]">AIML Placements Hub</h1>
+<nav className="w-full flex justify-between items-center px-8 py-5 border-b border-[#2c2f45]/40 backdrop-blur-xl md:sticky md:top-0 md:z-50 bg-[#0d0d1d]/70 shadow-lg">
+  {/* Logo */}
+  <h1 className="text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#CCCCFF] to-[#A3A3CC]">
+    AIML Placements Hub
+  </h1>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden md:flex flex-wrap gap-6 text-[#A3A3CC] text-base md:text-lg">
-            <li><NavLink to="/">Home</NavLink></li>
-            <li><NavLink to="/announcements">Announcements</NavLink></li>
-            <li><NavLink to="/resources">Resources</NavLink></li>
-            <li><NavLink to="/alumni-experiences">Alumni Experiences</NavLink></li>
-            <li><NavLink to="/issues">Issues</NavLink></li>
-            <li><NavLink to="/projects">Project Showcase</NavLink></li>
-            
-          
-          </ul>
+  {/* Desktop Navigation */}
+  <ul className="hidden md:flex items-center gap-1 text-sm font-medium">
+    <li>
+      <NavLink to="/">Home</NavLink>
+    </li>
+    <li>
+      <NavLink to="/announcements">Announcements</NavLink>
+    </li>
+    <li>
+      <NavLink to="/resources">Resources</NavLink>
+    </li>
+    <li>
+      <NavLink to="/alumni-experiences">Alumni Experiences</NavLink>
+    </li>
+    <li>
+      <NavLink to="/projects">Project Showcase</NavLink>
+    </li>
+    <li>
+      <NavLink to="/issues">Issues</NavLink>
+    </li>
+  </ul>
 
-          {/* Hamburger menu button for mobile */}
-          <div className="md:hidden">
-            <button onClick={toggleMobileMenu} className="text-[#CCCCFF] focus:outline-none">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
-        </nav>
+  {/* Hamburger (unchanged) */}
+  <div className="md:hidden">
+    <button onClick={toggleMobileMenu} className="text-[#CCCCFF] focus:outline-none">
+      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        {isMobileMenuOpen ? (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+        ) : (
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+        )}
+      </svg>
+    </button>
+  </div>
+</nav>
 
-        {/* Mobile Menu Overlay */}
         <div
-          className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out \
-            ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-          onClick={toggleMobileMenu}
-        />
+  className={`fixed inset-0 bg-gradient-to-br from-[#0d0d1d]/70 to-[#1e1f33]/70 z-40 backdrop-blur-md transition-opacity duration-300 ease-in-out
+    ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+  onClick={toggleMobileMenu}
+/>
 
-        {/* Mobile Slide-in Panel */}
-        <div
-          className={`fixed top-0 right-0 h-full w-3/4 max-w-xs bg-[#0d0d1d] backdrop-blur-md shadow-2xl z-50 transform transition-transform duration-300 ease-in-out \
-            ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
-        >
-          <div className="flex justify-end p-4">
-            <button onClick={toggleMobileMenu} className="text-[#CCCCFF] focus:outline-none">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
-          <ul className="flex flex-col items-start px-6 space-y-4 text-[#A3A3CC] text-lg">
-            <li><NavLink to="/" onClick={toggleMobileMenu}>Home</NavLink></li>
-            <li><NavLink to="/announcements" onClick={toggleMobileMenu}>Announcements</NavLink></li>
-            <li><NavLink to="/resources" onClick={toggleMobileMenu}>Resources</NavLink></li>
-            <li><NavLink to="/alumni-experiences" onClick={toggleMobileMenu}>Alumni Experiences</NavLink></li>
-            <li><NavLink to="/projects" onClick={toggleMobileMenu}>Project Showcase</NavLink></li>
-            <li><NavLink to="/issues" onClick={toggleMobileMenu}>Issues</NavLink></li>
-            
-          </ul>
-        </div>
+{/* Mobile Slide-in Panel */}
+<div
+  className={`fixed top-0 right-0 h-full w-4/5 max-w-xs bg-[#111327] shadow-2xl z-50 transform transition-transform duration-300 ease-in-out
+    ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+>
+  {/* Close button */}
+  <div className="flex justify-end p-5">
+    <button
+      onClick={toggleMobileMenu}
+      className="text-[#CCCCFF] hover:text-white transition-colors"
+    >
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
 
+  {/* Menu items */}
+  <ul className="flex flex-col px-6 space-y-3">
+    <li><NavLink to="/" onClick={toggleMobileMenu}>Home</NavLink></li>
+    <li><NavLink to="/announcements" onClick={toggleMobileMenu}>Announcements</NavLink></li>
+    <li><NavLink to="/resources" onClick={toggleMobileMenu}>Resources</NavLink></li>
+    <li><NavLink to="/alumni-experiences" onClick={toggleMobileMenu}>Alumni Experiences</NavLink></li>
+    <li><NavLink to="/projects" onClick={toggleMobileMenu}>Project Showcase</NavLink></li>
+    <li><NavLink to="/issues" onClick={toggleMobileMenu}>Issues</NavLink></li>
+  </ul>
+</div>
         {/* Main Content */}
         <main className="flex-grow w-full px-0 py-0">
           <Routes>

@@ -7,7 +7,7 @@ import {
     getAllAlumniExperiencesAdmin,
     updateAlumniExperienceStatus,
     deleteAlumniExperience,
-    getAllProjectsAdmin, // NEW: Import project admin functions
+    getAllProjectsAdmin,
     updateProjectStatus,
     deleteProject
 } from '../services/api';
@@ -36,7 +36,7 @@ const AdminPage = () => {
     const [alumniLoading, setAlumniLoading] = useState(true);
     const [alumniError, setAlumniError] = useState(null);
 
-    // NEW: Project states
+    // Project states
     const [projects, setProjects] = useState([]);
     const [projectsLoading, setProjectsLoading] = useState(true);
     const [projectsError, setProjectsError] = useState(null);
@@ -46,7 +46,7 @@ const AdminPage = () => {
         if (isAdmin) {
             fetchAnnouncements();
             fetchAlumniExperiences();
-            fetchProjects(); // NEW: Fetch projects when admin logs in
+            fetchProjects();
         }
     }, [isAdmin]);
 
@@ -74,7 +74,7 @@ const AdminPage = () => {
         }
     };
 
-    // NEW: Function to fetch projects
+    // Function to fetch projects
     const fetchProjects = async () => {
         try {
             setProjectsLoading(true);
@@ -186,7 +186,7 @@ const AdminPage = () => {
         }
     };
 
-    // NEW: Handle updating project status (Approve/Reject)
+    // Handle updating project status (Approve/Reject)
     const handleProjectStatusUpdate = async (id, status) => {
         try {
             await updateProjectStatus(id, { status });
@@ -200,7 +200,7 @@ const AdminPage = () => {
         }
     };
 
-    // NEW: Handle deleting project
+    // Handle deleting project
     const handleProjectDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this project?')) { // Simple confirmation
             try {
@@ -383,7 +383,7 @@ const AdminPage = () => {
                 )}
             </div>
 
-            {/* NEW: Project Management Section */}
+            {/* Project Management Section */}
             <div className="bg-deep-purple-blue rounded-xl shadow-xl p-8 border border-lavender-gray">
                 <h3 className="text-3xl font-bold text-lavender-soft mb-6 text-center">Project Management</h3>
                 {projectsLoading ? (
@@ -416,7 +416,7 @@ const AdminPage = () => {
                                 {project.imagePath && (
                                     <div className="mt-4 rounded-lg overflow-hidden border border-lavender-gray">
                                         <img
-                                            src={`https://aiml-placements-hub.onrender.com/${project.imagePath.replace(/\\/g, '/')}`}
+                                            src={project.imagePath} // Directly use imagePath from Cloudinary
                                             alt={project.title}
                                             className="w-full h-48 object-cover object-center"
                                             onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/400x240/A3A3CC/292966?text=Image+Not+Found"; }}

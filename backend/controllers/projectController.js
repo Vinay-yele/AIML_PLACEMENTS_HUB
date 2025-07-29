@@ -1,18 +1,20 @@
 // backend/controllers/projectController.js
 import Project from '../models/Project.js';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
+// Removed path and fs imports as local file operations for projects are removed
+// import path from 'path';
+// import fs from 'fs';
+// import { fileURLToPath } from 'url';
 import { sendEmail } from '../utils/emailService.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Removed __filename and __dirname as local file paths for projects are removed
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
-const UPLOAD_DIR = path.join(__dirname, '../uploads/projects');
-
-if (!fs.existsSync(UPLOAD_DIR)) {
-    fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-}
+// Removed UPLOAD_DIR and fs.mkdirSync as local file storage for projects is removed
+// const UPLOAD_DIR = path.join(__dirname, '../uploads/projects');
+// if (!fs.existsSync(UPLOAD_DIR)) {
+//     fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// }
 
 export const getApprovedProjects = async (req, res) => {
     try {
@@ -33,20 +35,16 @@ export const getAllProjectsAdmin = async (req, res) => {
 };
 
 export const submitProject = async (req, res) => {
-    // Destructure simplified fields from req.body
     const { title, shortDescription, technologies, githubLink, liveDemoLink, submittedByName, submittedByEmail } = req.body;
 
     const technologiesArray = technologies ? technologies.split(',').map(tech => tech.trim()) : [];
 
-    // Check for single file from multer
-    const imagePath = req.file ? req.file.path : null;
+    // NEW: imagePath will come from req.file.path (Cloudinary URL)
+    const imagePath = req.file ? req.file.path : null; // Cloudinary stores the URL in req.file.path
 
     // Basic validation
     if (!title || !shortDescription || technologiesArray.length === 0 || !githubLink || !imagePath || !submittedByName || !submittedByEmail) {
-        // If file was uploaded but validation fails, clean it up
-        if (imagePath) {
-            fs.unlink(imagePath, (err) => { if (err) console.error('Error cleaning up file:', err); });
-        }
+        // No local file cleanup needed here, Cloudinary handles failed uploads or unused files
         return res.status(400).json({ message: 'Please fill all required fields (Title, Short Description, Technologies, GitHub Link, Image, Your Name, Your Email).' });
     }
 
@@ -56,7 +54,7 @@ export const submitProject = async (req, res) => {
         technologies: technologiesArray,
         githubLink,
         liveDemoLink,
-        imagePath, // Use single imagePath
+        imagePath, // Store the Cloudinary URL
         submittedBy: { name: submittedByName, email: submittedByEmail },
         status: 'Pending'
     });
@@ -89,9 +87,7 @@ export const submitProject = async (req, res) => {
 
         res.status(201).json(savedProject);
     } catch (err) {
-        if (imagePath) { // Clean up file if DB save fails
-            fs.unlink(imagePath, (unlinkErr) => { if (unlinkErr) console.error('Error cleaning up file after DB save failure:', unlinkErr); });
-        }
+        // No local file cleanup needed here
         res.status(400).json({ message: err.message });
     }
 };
@@ -131,15 +127,14 @@ export const deleteProject = async (req, res) => {
             return res.status(404).json({ message: 'Project not found' });
         }
 
-        // Delete associated image file from the server
-        if (project.imagePath) {
-            fs.unlink(project.imagePath, (err) => {
-                if (err) console.error(`Error deleting file ${project.imagePath}:`, err);
-            });
-        }
+        // NEW: If you want to delete the image from Cloudinary on project deletion
+        // You would import cloudinary here and use cloudinary.uploader.destroy()
+        // For simplicity, we're not implementing Cloudinary deletion here,
+        // but it's a good practice for production to avoid orphaned images.
+        // If you want to implement this, you'd need the public_id from the imagePath.
 
         await Project.findByIdAndDelete(req.params.id);
-        res.json({ message: 'Project and associated file deleted successfully' });
+        res.json({ message: 'Project deleted successfully' });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

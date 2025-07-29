@@ -3,21 +3,29 @@ import express from 'express';
 const router = express.Router();
 import * as projectController from '../controllers/projectController.js';
 import multer from 'multer';
-import path from 'path';
-import { fileURLToPath } from 'url';
+// Removed path and fileURLToPath as they are not needed for CloudinaryStorage directly
+// import path from 'path';
+// import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// NEW: Cloudinary imports
+import { v2 as cloudinary } from 'cloudinary';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 
-const UPLOAD_DIR = path.join(__dirname, '../uploads/projects');
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, UPLOAD_DIR);
+// Configure Cloudinary Storage for Multer
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'aiml_projects', // Folder name in your Cloudinary account
+        format: async (req, file) => 'jpg', // supports promises as well
+        public_id: (req, file) => `${Date.now()}-${file.originalname.split('.')[0]}`, // Unique public_id
     },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
 });
 
 // Initialize Multer upload middleware for a SINGLE file
