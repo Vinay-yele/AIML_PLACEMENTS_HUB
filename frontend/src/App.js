@@ -39,14 +39,27 @@ const App = () => {
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#1e1f33] to-[#0d0d1d] text-white font-inter w-full">
-        {/* Navbar */}
-<nav className="w-full flex justify-between items-center px-8 py-5 border-b border-[#2c2f45]/40 backdrop-blur-xl md:sticky md:top-0 md:z-50 bg-[#0d0d1d]/70 shadow-lg">
-  {/* Logo */}
-  <h1 className="text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#CCCCFF] to-[#A3A3CC]">
-    AIML Placements Hub
-  </h1>
+        {/* /* Navbar */ }
+        <nav className="w-full flex justify-between items-center px-8 py-5 border-b border-[#2c2f45]/40 backdrop-blur-xl md:sticky md:top-0 md:z-50 bg-[#0d0d1d]/70 shadow-lg">
+          {/* Logo with online education icon */}
+          <div className="flex items-center gap-3">
+            {/* Online education SVG icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-9 h-9 text-[#CCCCFF]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3l9 4.5-9 4.5-9-4.5L12 3zm0 13.5v4.5m0-4.5c-4.97 0-9-2.24-9-5V8.25m18 0V11.5c0 2.76-4.03 5-9 5z" />
+            </svg>
+            <h1 className="text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#CCCCFF] to-[#A3A3CC]">
+              AIML Placements Hub
+            </h1>
+          </div>
 
-  {/* Desktop Navigation */}
+          {/* Desktop Navigation */}
   <ul className="hidden md:flex items-center gap-1 text-sm font-medium">
     <li>
       <NavLink to="/">Home</NavLink>
