@@ -2,9 +2,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-        baseURL: process.env.NODE_ENV === 'production'
-            ? 'https://aiml-placements-hub.onrender.com/api' // <--- **THIS IS THE CRITICAL CHANGE**
-            : 'http://localhost:4001/api',
+        baseURL: 'https://aimlplacementshub.me/api'
     });
 
 // --- Announcements ---
