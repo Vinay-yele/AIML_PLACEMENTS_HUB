@@ -3,6 +3,10 @@ import { Schema, model } from 'mongoose';
 
 // Define the schema for a Resource
 const resourceSchema = new Schema({
+    file: {
+        type: String,
+        required: true
+    },
     originalName: {
         type: String,
         required: true,

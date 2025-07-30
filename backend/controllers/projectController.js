@@ -1,5 +1,6 @@
 // backend/controllers/projectController.js
 import Project from '../models/Project.js';
+import { uploadOnCloudinary } from '../utils/cloudinary.js';
 // Removed path and fs imports as local file operations for projects are removed
 // import path from 'path';
 // import fs from 'fs';
@@ -38,30 +39,32 @@ export const submitProject = async (req, res) => {
     const { title, shortDescription, technologies, githubLink, liveDemoLink, submittedByName, submittedByEmail } = req.body;
 
     const technologiesArray = technologies ? technologies.split(',').map(tech => tech.trim()) : [];
-
+    console.log("Here we ae3")
     // NEW: imagePath will come from req.file.path (Cloudinary URL)
-    const imagePath = req.file ? req.file.path : null; // Cloudinary stores the URL in req.file.path
-
+    const imagePath = req.file.path;
+    const imageUrl = await uploadOnCloudinary(imagePath);
+    // Cloudinary stores the URL in req.file.path
+    console.log("Nexr hign wer")
     // Basic validation
     if (!title || !shortDescription || technologiesArray.length === 0 || !githubLink || !imagePath || !submittedByName || !submittedByEmail) {
         // No local file cleanup needed here, Cloudinary handles failed uploads or unused files
         return res.status(400).json({ message: 'Please fill all required fields (Title, Short Description, Technologies, GitHub Link, Image, Your Name, Your Email).' });
     }
-
+    console.log("Nexr hign wer")
     const newProject = new Project({
         title,
         shortDescription,
         technologies: technologiesArray,
         githubLink,
         liveDemoLink,
-        imagePath, // Store the Cloudinary URL
+        imagePath: imageUrl.secure_url,
         submittedBy: { name: submittedByName, email: submittedByEmail },
         status: 'Pending'
     });
-
+    console.log("Nexr hign wer")
     try {
         const savedProject = await newProject.save();
-
+        console.log("Nexr hign wer")
         const adminEmail = process.env.ADMIN_EMAIL || 'your_admin_email@example.com';
         const emailSubject = `New Project Submission: ${savedProject.title}`;
         const emailText = `A new project has been submitted for review:\n\nProject: ${savedProject.title}\nSubmitted By: ${savedProject.submittedBy.name} (${savedProject.submittedBy.email})\nTechnologies: ${savedProject.technologies.join(', ')}\n\nReview it in your admin dashboard.`;
