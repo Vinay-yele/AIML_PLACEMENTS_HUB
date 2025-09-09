@@ -2,8 +2,13 @@
 import axios from 'axios';
 
 const API = axios.create({
+<<<<<<< HEAD
         // baseURL: 'https://aimlplacementshub.me/api'
         baseURL: 'http://localhost:4001/api'
+=======
+        baseURL: 'https://aiml-placements-hub.onrender.com'
+
+>>>>>>> 128ba52 (updated base url for backend)
     });
 
 // --- Announcements ---
