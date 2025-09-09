@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-        baseURL: 'https://aiml-placements-hub.onrender.com'
+      baseURL: 'https://aiml-placements-hub.onrender.com/api'
     });
 
 // --- Announcements ---
